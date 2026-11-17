@@ -67,6 +67,14 @@
   </div>
 </div>
 
+<div class="layar" id="iosLancar" style="display:none">
+  <img src="icons/icon-192.png" alt="">
+  <h1>Rekod Logistik BK</h1>
+  <p>Bahagian Keselamatan, Universiti Teknologi Malaysia</p>
+  <a class="btn" id="iosBuka" rel="noopener">Buka Sistem →</a>
+  <p style="font-size:12px;opacity:.75">Pada iPhone/iPad, sistem dibuka dalam Safari supaya log masuk berfungsi dengan betul.</p>
+</div>
+
 <div class="layar" id="luar">
   <img src="icons/icon-192.png" alt="">
   <h1>Tiada sambungan internet</h1>
@@ -107,10 +115,21 @@
     muat.classList.add('hilang');
     $('keluar').classList.add('on');
   });
-  $('cubaLagi').addEventListener('click', bukaSistem);
-  window.addEventListener('online', function () { if (luar.classList.contains('on')) bukaSistem(); });
+  $('cubaLagi').addEventListener('click', function () { if (iosPeranti) { if (navigator.onLine) luar.classList.remove('on'); } else bukaSistem(); });
+  window.addEventListener('online', function () { if (luar.classList.contains('on')) { if (iosPeranti) luar.classList.remove('on'); else bukaSistem(); } });
   window.addEventListener('offline', function () { luar.classList.add('on'); });
-  bukaSistem();
+  // iPhone / iPad: Safari menyekat kuki Google di dalam bingkai (iframe), jadi skrin log masuk tidak muncul.
+  // Penyelesaian: jangan guna bingkai — tunjuk skrin pembuka dan buka sistem terus dalam Safari.
+  var iosPeranti = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var modApp = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  if (iosPeranti) {
+    muat.classList.add('hilang'); app.style.display = 'none';
+    var b = $('iosBuka'); b.href = SISTEM;
+    if (modApp) b.target = '_blank'; // dari ikon skrin utama: buka dalam Safari (sesi log masuk Safari)
+    $('iosLancar').style.display = 'flex';
+  } else {
+    bukaSistem();
+  }
 
   // Service worker (fail kulit sahaja)
   if ('serviceWorker' in navigator) {

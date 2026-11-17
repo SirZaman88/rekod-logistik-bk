@@ -2,7 +2,7 @@
  * Menyimpan fail kulit sahaja (halaman, ikon, manifest) supaya aplikasi boleh dibuka
  * dan memaparkan mesej mesra jika tiada internet. Data sistem tidak disimpan dalam peranti:
  * semua rekod tetap dibaca terus dari Google Apps Script. */
-const CACHE = 'logistik-bk-v1';
+const CACHE = 'logistik-bk-v2';
 const FAIL = ['./', './index.html', './manifest.webmanifest', './icons/icon-192.png', './icons/icon-512.png',
   './icons/icon-maskable-512.png', './icons/apple-touch-icon.png', './icons/favicon-32.png'];
 
